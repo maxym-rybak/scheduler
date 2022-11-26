@@ -1,0 +1,107 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type User {
+  id: String!
+
+  """minLength: 1, maxLength: 15"""
+  firstName: String!
+
+  """minLength: 1, maxLength: 15"""
+  lastName: String!
+  email: String!
+  phone: String!
+
+  """minLength: 6, maxLength: 30"""
+  password: String!
+}
+
+type LoginResponse {
+  access_token: String!
+}
+
+type WorkTime {
+  id: Int!
+  start: DateTime!
+  end: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Schedule {
+  id: Int!
+
+  """minLength: 1, maxLength: 25"""
+  name: String!
+  workTimes: [WorkTime!]
+}
+
+type Query {
+  findOne(userUniqueFields: UserUniqueFields!): User!
+}
+
+input UserUniqueFields {
+  id: String
+  email: String
+  phone: String
+}
+
+type Mutation {
+  createUser(createUserInput: UserCreateInput!): User!
+  updateUser(updateUserInput: UserUpdateById!): User!
+  login(authLoginInput: AuthLoginInput!): LoginResponse!
+  createSchedule(createScheduleInput: CreateScheduleInput!): Schedule!
+  createWorkTime(createWorkTimeInput: CreateWorkTimeInput!): WorkTime!
+}
+
+input UserCreateInput {
+  """minLength: 1, maxLength: 15"""
+  firstName: String!
+
+  """minLength: 1, maxLength: 15"""
+  lastName: String!
+  email: String!
+  phone: String!
+
+  """minLength: 6, maxLength: 30"""
+  password: String!
+}
+
+input UserUpdateById {
+  id: String!
+  data: UserUpdateInput!
+}
+
+input UserUpdateInput {
+  """minLength: 1, maxLength: 15"""
+  firstName: String
+
+  """minLength: 1, maxLength: 15"""
+  lastName: String
+  email: String
+  phone: String
+
+  """minLength: 6, maxLength: 30"""
+  password: String
+}
+
+input AuthLoginInput {
+  email: String!
+
+  """minLength: 6, maxLength: 30"""
+  password: String!
+}
+
+input CreateScheduleInput {
+  """minLength: 1, maxLength: 25"""
+  name: String!
+}
+
+input CreateWorkTimeInput {
+  start: DateTime!
+  end: DateTime!
+}
