@@ -1,4 +1,11 @@
-import { Resolver, Query, Mutation, Args } from '@nestjs/graphql'
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  ResolveField,
+  Parent,
+} from '@nestjs/graphql'
 import { UserService } from './user.service'
 import { User } from './dto/user.type'
 import { UserCreateInput } from './dto/user-create.input'
@@ -8,14 +15,33 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard'
 import { Roles } from '../auth/decorators/roles.decorator'
 import { RolesGuard } from '../auth/guards/roles.guard'
 import { CurrentUser } from '../auth/decorators/current-user.decorator'
+import { SearchUsersInput } from './dto/search-users.input'
+import { ScheduleService } from '../schedule/schedule.service'
+import { Schedule } from '../schedule/dto/schedule.type'
 
 @Resolver(User)
 export class UserResolver {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly scheduleService: ScheduleService,
+  ) {}
 
   @Query(() => User)
-  async findOne(@Args('userUniqueFields') userUniqueFields: UserUniqueFields) {
+  async findUser(@Args('userUniqueFields') userUniqueFields: UserUniqueFields) {
     return this.userService.findOne(userUniqueFields)
+  }
+
+  @Query(() => [User])
+  async findUsers(
+    @Args('userUniqueFields') userUniqueFields: SearchUsersInput,
+  ) {
+    return this.userService.findMany(userUniqueFields)
+  }
+
+  @ResolveField('schedule', () => Schedule, { nullable: true })
+  async user(@Parent() user: User) {
+    const { id } = user
+    return this.scheduleService.findOne(id)
   }
 
   @Mutation(() => User)

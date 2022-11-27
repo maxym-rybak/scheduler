@@ -25,8 +25,8 @@ model User {
 model Schedule {
   id            Int             @id @default(autoincrement())
   name          String
-  userId        String
-  user          User            @relation(fields: [userId], references: [id])
+  ownerId       String
+  owner         User            @relation(fields: [ownerId], references: [id])
   appointments  Appointment[]
   workTime      WorkTime[]
 }

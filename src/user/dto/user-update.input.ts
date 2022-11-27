@@ -10,6 +10,7 @@ import { User } from './user.type'
 @InputType()
 export class UserUpdateInput extends OmitType(PartialType(User), [
   'id',
+  'schedule',
 ] as const) {}
 
 @InputType()

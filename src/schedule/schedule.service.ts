@@ -8,19 +8,15 @@ export class ScheduleService {
   constructor(private readonly prismaService: PrismaService) {}
   create(createScheduleInput: CreateScheduleInput, user: User) {
     return this.prismaService.schedule.create({
-      data: { ...createScheduleInput, userId: user.id },
+      data: { ...createScheduleInput, ownerId: user.id },
     })
   }
 
-  findAll() {
-    return `This action returns all workTime`
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} workTime`
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} workTime`
+  findOne(ownerId: string) {
+    return this.prismaService.schedule.findFirst({
+      where: {
+        ownerId,
+      },
+    })
   }
 }

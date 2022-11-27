@@ -4,6 +4,7 @@ import { PrismaService } from '../prisma.service'
 import { Prisma } from '@prisma/client'
 import { UserUniqueFields } from './dto/user-update.input'
 import { User } from './dto/user.type'
+import { SearchUsersInput } from './dto/search-users.input'
 
 @Injectable()
 export class UserService {
@@ -15,6 +16,11 @@ export class UserService {
 
   async findOne(where: UserUniqueFields) {
     return this.prismaService.user.findFirst({
+      where,
+    })
+  }
+  async findMany(where: SearchUsersInput) {
+    return this.prismaService.user.findMany({
       where,
     })
   }

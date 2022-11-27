@@ -1,5 +1,6 @@
 import { Field, InputType, ObjectType } from '@nestjs/graphql'
 import { IsEmail, IsString, MaxLength, MinLength } from 'class-validator'
+import { Schedule } from '../../schedule/dto/schedule.type'
 
 @InputType({ isAbstract: true })
 @ObjectType()
@@ -32,4 +33,7 @@ export class User {
   @MinLength(6)
   @Field({ nullable: false, description: 'minLength: 6, maxLength: 30' })
   password: string
+
+  @Field(() => Schedule, { nullable: true })
+  schedule?: Schedule
 }

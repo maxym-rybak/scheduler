@@ -2,25 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type User {
-  id: String!
-
-  """minLength: 1, maxLength: 15"""
-  firstName: String!
-
-  """minLength: 1, maxLength: 15"""
-  lastName: String!
-  email: String!
-  phone: String!
-
-  """minLength: 6, maxLength: 30"""
-  password: String!
-}
-
-type LoginResponse {
-  access_token: String!
-}
-
 type WorkTime {
   id: Int!
   start: DateTime!
@@ -37,11 +18,33 @@ type Schedule {
 
   """minLength: 1, maxLength: 25"""
   name: String!
+  owner: User!
   workTimes: [WorkTime!]
 }
 
+type User {
+  id: String!
+
+  """minLength: 1, maxLength: 15"""
+  firstName: String!
+
+  """minLength: 1, maxLength: 15"""
+  lastName: String!
+  email: String!
+  phone: String!
+
+  """minLength: 6, maxLength: 30"""
+  password: String!
+  schedule: Schedule
+}
+
+type LoginResponse {
+  access_token: String!
+}
+
 type Query {
-  findOne(userUniqueFields: UserUniqueFields!): User!
+  findUser(userUniqueFields: UserUniqueFields!): User!
+  findUsers(userUniqueFields: SearchUsersInput!): [User!]!
 }
 
 input UserUniqueFields {
@@ -50,11 +53,21 @@ input UserUniqueFields {
   phone: String
 }
 
+input SearchUsersInput {
+  """minLength: 1, maxLength: 15"""
+  firstName: String
+
+  """minLength: 1, maxLength: 15"""
+  lastName: String
+  email: String
+  phone: String
+}
+
 type Mutation {
   createUser(createUserInput: UserCreateInput!): User!
   updateUser(updateUserInput: UserUpdateById!): User!
-  login(authLoginInput: AuthLoginInput!): LoginResponse!
   createSchedule(createScheduleInput: CreateScheduleInput!): Schedule!
+  login(authLoginInput: AuthLoginInput!): LoginResponse!
   createWorkTime(createWorkTimeInput: CreateWorkTimeInput!): WorkTime!
 }
 
@@ -89,16 +102,16 @@ input UserUpdateInput {
   password: String
 }
 
+input CreateScheduleInput {
+  """minLength: 1, maxLength: 25"""
+  name: String!
+}
+
 input AuthLoginInput {
   email: String!
 
   """minLength: 6, maxLength: 30"""
   password: String!
-}
-
-input CreateScheduleInput {
-  """minLength: 1, maxLength: 25"""
-  name: String!
 }
 
 input CreateWorkTimeInput {

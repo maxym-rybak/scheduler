@@ -1,4 +1,4 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql'
+import { Resolver, Mutation, Args } from '@nestjs/graphql'
 import { ScheduleService } from './schedule.service'
 import { CreateScheduleInput } from './dto/create-schedule.input'
 import { Schedule } from './dto/schedule.type'
